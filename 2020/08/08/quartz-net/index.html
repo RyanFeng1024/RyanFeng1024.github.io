@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="C#,QUARTZ.NET," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="工作中偶尔会遇到需要定时处理的任务，最近工作上有个需求，要从一个第三方那边获取记录数据，然后解析数据文件入库。第三方那边数据提供方式是FTP形式，存储的xml文件。所以打算用定时任务去处理，先写了个Demo试试手，在此记录一下。 1、创建项目后，引用Quartz.net包，我用的目前最新的3.1.0版本；还有log4net引用，配置好日志      2、创建Quartz定时任务的帮助类文件，下面这">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Quartz.net的快速简单上手使用以及防止IIS回收停止Job的处理">
+<meta property="og:url" content="https://ryanfeng1024.github.io/2020/08/08/quartz-net/index.html">
+<meta property="og:site_name" content="Ryan’s Blog">
+<meta property="og:description" content="工作中偶尔会遇到需要定时处理的任务，最近工作上有个需求，要从一个第三方那边获取记录数据，然后解析数据文件入库。第三方那边数据提供方式是FTP形式，存储的xml文件。所以打算用定时任务去处理，先写了个Demo试试手，在此记录一下。 1、创建项目后，引用Quartz.net包，我用的目前最新的3.1.0版本；还有log4net引用，配置好日志      2、创建Quartz定时任务的帮助类文件，下面这">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ryanfeng1024.github.io/images/upload/quartz-net-1.png">
+<meta property="og:image" content="https://ryanfeng1024.github.io/images/upload/quartz-net-2.png">
+<meta property="og:image" content="https://ryanfeng1024.github.io/images/upload/quartz-net-3.png">
+<meta property="article:published_time" content="2020-08-08T22:07:59.000Z">
+<meta property="article:modified_time" content="2020-08-08T22:07:59.000Z">
+<meta property="article:author" content="Ryan Feng">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="QUARTZ.NET">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanfeng1024.github.io/images/upload/quartz-net-1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ryanfeng1024.github.io/2020/08/08/quartz-net/"/>
+
+
+
+
+
+  <title>Quartz.net的快速简单上手使用以及防止IIS回收停止Job的处理 | Ryan’s Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Ryan’s Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ryanfeng1024.github.io/2020/08/08/quartz-net/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ryan Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryan’s Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Quartz.net的快速简单上手使用以及防止IIS回收停止Job的处理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-08-08T18:07:59-04:00">
+                2020-08-08
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2020-08-08T18:07:59-04:00">
+                2020-08-08
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/08/08/quartz-net/" class="leancloud_visitors" data-flag-title="Quartz.net的快速简单上手使用以及防止IIS回收停止Job的处理">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>工作中偶尔会遇到需要定时处理的任务，最近工作上有个需求，要从一个第三方那边获取记录数据，然后解析数据文件入库。<br>第三方那边数据提供方式是FTP形式，存储的xml文件。所以打算用定时任务去处理，先写了个Demo试试手，在此记录一下。</p>
+<p>1、创建项目后，引用<code>Quartz.net</code>包，我用的目前最新的3.1.0版本；还有<code>log4net</code>引用，配置好日志  </p>
+<p><img src="/../images/upload/quartz-net-1.png" alt="Alt text">  </p>
+<p>2、创建Quartz定时任务的帮助类文件，下面这个是我网上找的，就直接拿来用了  </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br></pre></td><td class="code"><pre><span class="line">　　 <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">QuartzUtil</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ISchedulerFactory sf = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> IScheduler sched = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="title">QuartzUtil</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">async</span> <span class="keyword">void</span> <span class="title">Init</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        sf = <span class="keyword">new</span> StdSchedulerFactory();</span><br><span class="line">        sched = <span class="keyword">await</span> sf.GetScheduler();</span><br><span class="line">        <span class="keyword">await</span> sched.Start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 添加Job 并且以定点的形式运行</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;typeparam name=&quot;T&quot;&gt;</span><span class="doctag">&lt;/typeparam&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;JobName&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;CronTime&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;jobDataMap&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">AddJob</span>&lt;<span class="title">T</span>&gt;(<span class="params"><span class="built_in">string</span> JobName, <span class="built_in">string</span> CronTime, Dictionary&lt;<span class="built_in">string</span>, <span class="built_in">object</span>&gt; map</span>) <span class="keyword">where</span> T : IJob</span></span><br><span class="line">    &#123;</span><br><span class="line">        IJobDetail jobCheck = JobBuilder.Create&lt;T&gt;().WithIdentity(JobName, JobName + <span class="string">&quot;_Group&quot;</span>).Build();</span><br><span class="line">        <span class="keyword">if</span> (map != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            jobCheck.JobDataMap.PutAll(map);</span><br><span class="line">        &#125;</span><br><span class="line">        ICronTrigger CronTrigger = <span class="keyword">new</span> CronTriggerImpl(JobName + <span class="string">&quot;_CronTrigger&quot;</span>, JobName + <span class="string">&quot;_TriggerGroup&quot;</span>, CronTime);</span><br><span class="line">        <span class="keyword">await</span> sched.ScheduleJob(jobCheck, CronTrigger);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 添加Job 并且以定点的形式运行</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;typeparam name=&quot;T&quot;&gt;</span><span class="doctag">&lt;/typeparam&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;JobName&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;CronTime&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">AddJob</span>&lt;<span class="title">T</span>&gt;(<span class="params"><span class="built_in">string</span> JobName, <span class="built_in">string</span> CronTime</span>) <span class="keyword">where</span> T : IJob</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">await</span> AddJob&lt;T&gt;(JobName, CronTime, <span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 添加Job 并且以周期的形式运行</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;typeparam name=&quot;T&quot;&gt;</span><span class="doctag">&lt;/typeparam&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;JobName&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;StartTime&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;EndTime&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;SimpleTime&quot;&gt;</span>毫秒数<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">AddJob</span>&lt;<span class="title">T</span>&gt;(<span class="params"><span class="built_in">string</span> JobName, DateTimeOffset StartTime, DateTimeOffset EndTime, <span class="built_in">int</span> SimpleTime</span>) <span class="keyword">where</span> T : IJob</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">await</span> AddJob&lt;T&gt;(JobName, StartTime, EndTime, TimeSpan.FromMilliseconds(SimpleTime));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 添加Job 并且以周期的形式运行</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;typeparam name=&quot;T&quot;&gt;</span><span class="doctag">&lt;/typeparam&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;JobName&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;StartTime&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;EndTime&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;SimpleTime&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">AddJob</span>&lt;<span class="title">T</span>&gt;(<span class="params"><span class="built_in">string</span> JobName, DateTimeOffset StartTime, DateTimeOffset EndTime, TimeSpan SimpleTime</span>) <span class="keyword">where</span> T : IJob</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">await</span> AddJob&lt;T&gt;(JobName, StartTime, EndTime, SimpleTime, <span class="keyword">new</span> Dictionary&lt;<span class="built_in">string</span>, <span class="built_in">object</span>&gt;());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 添加Job 并且以周期的形式运行</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;typeparam name=&quot;T&quot;&gt;</span><span class="doctag">&lt;/typeparam&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;JobName&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;StartTime&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;EndTime&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;SimpleTime&quot;&gt;</span>毫秒数<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;jobDataMap&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">AddJob</span>&lt;<span class="title">T</span>&gt;(<span class="params"><span class="built_in">string</span> JobName, DateTimeOffset StartTime, DateTimeOffset EndTime, <span class="built_in">int</span> SimpleTime, <span class="built_in">string</span> MapKey, <span class="built_in">object</span> MapValue</span>) <span class="keyword">where</span> T : IJob</span></span><br><span class="line">    &#123;</span><br><span class="line">        Dictionary&lt;<span class="built_in">string</span>, <span class="built_in">object</span>&gt; map = <span class="keyword">new</span> Dictionary&lt;<span class="built_in">string</span>, <span class="built_in">object</span>&gt;();</span><br><span class="line">        map.Add(MapKey, MapValue);</span><br><span class="line">        <span class="keyword">await</span> AddJob&lt;T&gt;(JobName, StartTime, EndTime, TimeSpan.FromMilliseconds(SimpleTime), map);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 添加Job 并且以周期的形式运行</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;typeparam name=&quot;T&quot;&gt;</span><span class="doctag">&lt;/typeparam&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;JobName&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;StartTime&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;EndTime&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;SimpleTime&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;jobDataMap&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">AddJob</span>&lt;<span class="title">T</span>&gt;(<span class="params"><span class="built_in">string</span> JobName, DateTimeOffset StartTime, DateTimeOffset EndTime, TimeSpan SimpleTime, Dictionary&lt;<span class="built_in">string</span>, <span class="built_in">object</span>&gt; map</span>) <span class="keyword">where</span> T : IJob</span></span><br><span class="line">    &#123;</span><br><span class="line">        IJobDetail jobCheck = JobBuilder.Create&lt;T&gt;().WithIdentity(JobName, JobName + <span class="string">&quot;_Group&quot;</span>).Build();</span><br><span class="line">        jobCheck.JobDataMap.PutAll(map);</span><br><span class="line">        ISimpleTrigger triggerCheck = <span class="keyword">new</span> SimpleTriggerImpl(JobName + <span class="string">&quot;_SimpleTrigger&quot;</span>, JobName + <span class="string">&quot;_TriggerGroup&quot;</span>,</span><br><span class="line">                                    StartTime,</span><br><span class="line">                                    EndTime,</span><br><span class="line">                                    SimpleTriggerImpl.RepeatIndefinitely,</span><br><span class="line">                                    SimpleTime);</span><br><span class="line">        <span class="keyword">await</span> sched.ScheduleJob(jobCheck, triggerCheck);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 修改触发器时间,需要job名,以及修改结果</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> CronTriggerImpl类型触发器</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">async</span> <span class="keyword">void</span> <span class="title">UpdateTime</span>(<span class="params"><span class="built_in">string</span> jobName, <span class="built_in">string</span> CronTime</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        TriggerKey TKey = <span class="keyword">new</span> TriggerKey(jobName + <span class="string">&quot;_CronTrigger&quot;</span>, jobName + <span class="string">&quot;_TriggerGroup&quot;</span>);</span><br><span class="line">        CronTriggerImpl cti = <span class="keyword">await</span> sched.GetTrigger(TKey) <span class="keyword">as</span> CronTriggerImpl;</span><br><span class="line">        cti.CronExpression = <span class="keyword">new</span> CronExpression(CronTime);</span><br><span class="line">        <span class="keyword">await</span> sched.RescheduleJob(TKey, cti);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 修改触发器时间,需要job名,以及修改结果</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> SimpleTriggerImpl类型触发器</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;jobName&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;SimpleTime&quot;&gt;</span>分钟数<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">UpdateTime</span>(<span class="params"><span class="built_in">string</span> jobName, <span class="built_in">int</span> SimpleTime</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        UpdateTime(jobName, TimeSpan.FromMinutes(SimpleTime));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 修改触发器时间,需要job名,以及修改结果</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> SimpleTriggerImpl类型触发器</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">async</span> <span class="keyword">void</span> <span class="title">UpdateTime</span>(<span class="params"><span class="built_in">string</span> jobName, TimeSpan SimpleTime</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        TriggerKey TKey = <span class="keyword">new</span> TriggerKey(jobName + <span class="string">&quot;_SimpleTrigger&quot;</span>, jobName + <span class="string">&quot;_TriggerGroup&quot;</span>);</span><br><span class="line">        SimpleTriggerImpl sti = <span class="keyword">await</span> sched.GetTrigger(TKey) <span class="keyword">as</span> SimpleTriggerImpl;</span><br><span class="line">        sti.RepeatInterval = SimpleTime;</span><br><span class="line">        <span class="keyword">await</span> sched.RescheduleJob(TKey, sti);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 暂停所有Job</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 暂停功能Quartz提供有很多,以后可扩充</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">PauseAll</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        sched.PauseAll();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 恢复所有Job</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 恢复功能Quartz提供有很多,以后可扩充</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ResumeAll</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        sched.ResumeAll();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 删除Job</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 删除功能Quartz提供有很多,以后可扩充</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;JobName&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">DeleteJob</span>(<span class="params"><span class="built_in">string</span> JobName</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        JobKey jk = <span class="keyword">new</span> JobKey(JobName, JobName + <span class="string">&quot;_Group&quot;</span>);</span><br><span class="line">        sched.DeleteJob(jk);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 卸载定时器</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;waitForJobsToComplete&quot;&gt;</span>是否等待job执行完成<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Shutdown</span>(<span class="params"><span class="built_in">bool</span> waitForJobsToComplete</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (sched != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            sched.Shutdown(waitForJobsToComplete);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 判断任务是否已经建立</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;jobName&quot;&gt;</span>任务名<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">async</span> Task&lt;<span class="built_in">bool</span>&gt; <span class="title">CheckExist</span>(<span class="params"><span class="built_in">string</span> jobName</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">bool</span> isExists = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">        TriggerKey triggerKey = <span class="keyword">new</span> TriggerKey(jobName + <span class="string">&quot;_CronTrigger&quot;</span>, jobName + <span class="string">&quot;_TriggerGroup&quot;</span>);</span><br><span class="line">        isExists = <span class="keyword">await</span> sched.CheckExists(triggerKey);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> isExists;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 判断简单任务是否已经建立</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;jobName&quot;&gt;</span>任务名<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">async</span> Task&lt;<span class="built_in">bool</span>&gt; <span class="title">CheckSimpleExist</span>(<span class="params"><span class="built_in">string</span> jobName</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">bool</span> isExists = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">        TriggerKey triggerKey = <span class="keyword">new</span> TriggerKey(jobName + <span class="string">&quot;_SimpleTrigger&quot;</span>, jobName + <span class="string">&quot;_TriggerGroup&quot;</span>);</span><br><span class="line">        isExists = <span class="keyword">await</span> sched.CheckExists(triggerKey);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> isExists;</span><br><span class="line">    &#125;</span><br><span class="line">　　&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>3、创建一个Job类，继承Quartz的<code>IJob</code>接口，实现<code>Execute</code>方法。  </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">GetRecordJob</span> : <span class="title">IJob</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">async</span> Task <span class="title">Execute</span>(<span class="params">IJobExecutionContext context</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Log.Info(DateTime.Now.ToString(<span class="string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>4、Job类和Quartz的帮助类都建好之后，接下来就是应用了  </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">QuartzUtil.AddJob&lt;GetRecordJob&gt;(<span class="string">&quot;job1&quot;</span>, <span class="string">&quot;0/10 * * * * ?&quot;</span>);     <span class="comment">//cron表达式，10s执行一次</span></span><br></pre></td></tr></table></figure>
+
+<p><br><br><br>如果你想在程序启动的时候就开始执行定时任务，就把上面这句代码加到<code>Application_Start</code>里就行。不过记得要先初始化一下Quartz哦。  </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">Application_Start</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//应用程序启动时加载log4net设置 </span></span><br><span class="line">    XmlConfigurator.Configure();</span><br><span class="line"></span><br><span class="line">    AreaRegistration.RegisterAllAreas();</span><br><span class="line">    FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);</span><br><span class="line">    RouteConfig.RegisterRoutes(RouteTable.Routes);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化启动定时任务引擎</span></span><br><span class="line">    QuartzUtil.Init();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 启动设定的任务</span></span><br><span class="line">    QuartzUtil.AddJob&lt;GetRecordJob&gt;(<span class="string">&quot;job1&quot;</span>, <span class="string">&quot;0/10 * * * * ?&quot;</span>);     <span class="comment">//10s执行一次</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<br>
+
+<p>至此一个可以正常运行的简单的小定时任务Demo就写好了。但是在我发布到IIS上挂着跑准备挂一两天看有没有问题的时候，问题就来了。发布到IIS后， <code>Application_Start</code> 事件需要有请求才会触发。这倒问题不大，部署完之后 点一下就好了。  </p>
+<br>
+
+<p>问题是，看日志发现定时任务跑了一阵子后就停掉不跑了，看日志的时间，从开始记录到最后一条日志的时间间隔是20分钟左右，想起来IIS的闲置超时时间默认就是20分钟，应该是IIS回收了导致定时任务停止，经过测试也确定了是这个原因。接下来就得解决这个问题。</p>
+<br>
+
+<p><strong>1）设置IIS闲置超时时间</strong>  </p>
+<p>设置IIS应用程序池的闲置超时时间为0，  </p>
+<p><img src="/../images/upload/quartz-net-2.png" alt="Alt text">  </p>
+<br>
+
+<p>固定回收时间间隔（默认1740分钟）设置为0。  </p>
+<p><img src="/../images/upload/quartz-net-3.png" alt="Alt text">   </p>
+<br>
+不过，即使可以将IIS进程池回收关掉，仍然不建议设置为完全不回收，如果长时间不回收，可能会存在内存溢出的问题。  
+具体看业务场景吧，我这需求对数据实时性要求不高，偶尔停下来歇息一下也不是坏事。
+
+<br>
+
+<p><strong>2）代码处理</strong>  </p>
+<p>我们知道关闭、重启网站或者IIS程序池是会执行<code>Application_End</code>事件的，<code>Application_End</code> 事件后 就跟刚部署到IIS的站点一样，在发送第一个针对该 Web 应用程序的 Http 请求后，IIS 才会自动启动 Web 应用程序，既然IIS是因为程序闲置没有收到请求而回收进程的，那就在<code>Application_End</code> 事件里再提交一个请求给该 Web 应用程序，从而“激活”关闭的应用程序不就可以了？ “激活”程序之后，定时任务就又可以继续自动执行啦。  </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MvcApplication</span> : <span class="title">System.Web.HttpApplication</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">Application_Start</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//应用程序启动时加载log4net设置 </span></span><br><span class="line">        XmlConfigurator.Configure();</span><br><span class="line"></span><br><span class="line">        Log.Info(<span class="string">&quot;Application_Start 触发&quot;</span>);</span><br><span class="line"></span><br><span class="line">        AreaRegistration.RegisterAllAreas();</span><br><span class="line">        FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);</span><br><span class="line">        RouteConfig.RegisterRoutes(RouteTable.Routes);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 初始化启动定时任务引擎</span></span><br><span class="line">        QuartzUtil.Init();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 启动设定的任务</span></span><br><span class="line">        QuartzUtil.AddJob&lt;GetRecordJob&gt;(<span class="string">&quot;job1&quot;</span>, <span class="string">&quot;0/10 * * * * ?&quot;</span>);    <span class="comment">// 10s执行一次</span></span><br><span class="line"></span><br><span class="line">        Log.Info(<span class="string">&quot;Application_Start 启动设定的任务&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">Application_End</span>(<span class="params"><span class="built_in">object</span> sender, EventArgs e</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Log.Info(<span class="string">&quot;Application_End 触发\r\n&quot;</span>);</span><br><span class="line">        Activate();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Restart</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Log.Info(<span class="string">&quot;Restart()  卸载所有定时器... &quot;</span>);</span><br><span class="line">        QuartzUtil.Shutdown(<span class="literal">false</span>);     <span class="comment">//true 等待当前job执行完再关闭，false 直接关闭</span></span><br><span class="line">        Log.Info(<span class="string">&quot;Restart()  准备重启 &quot;</span>);</span><br><span class="line">        HttpRuntime.UnloadAppDomain();  <span class="comment">//会触发Application_End 事件</span></span><br><span class="line">        Log.Info(<span class="string">&quot;Restart()  重启完成 &quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> “激活”程序 </span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span>     IIS回收后，将触发Application_End事件，需发起一次请求才会触发 Application_Start事件开始执行定时任务</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Activate</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">string</span> host = System.Configuration.ConfigurationManager.AppSettings[<span class="string">&quot;WebUrl&quot;</span>].ToString();</span><br><span class="line">        <span class="built_in">string</span> url = host.TrimEnd(<span class="string">&#x27;/&#x27;</span>) + <span class="string">&quot;/Home/Ping&quot;</span>;</span><br><span class="line">        Log.Info(<span class="string">&quot;PING URL : &quot;</span> + url);</span><br><span class="line">        <span class="built_in">string</span> res = HttpUtils.HttpGet(url);</span><br><span class="line">        Log.Info(<span class="string">&quot;PING RESULT:&quot;</span> + res + <span class="string">&quot;\r\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://github.com/RyanFeng1024/Quartz.netDemo">完整Demo下载</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag"># C#</a>
+          
+            <a href="/tags/QUARTZ-NET/" rel="tag"># QUARTZ.NET</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/18/HideComplaintInWX/" rel="next" title="最新屏蔽微信举报方法">
+                <i class="fa fa-chevron-left"></i> 最新屏蔽微信举报方法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/08/19/m3u8-download/" rel="prev" title="\[C#/Java\] 针对 QINIU-PROTECTION-10 的m3u8视频文件解密">
+                \[C#/Java\] 针对 QINIU-PROTECTION-10 的m3u8视频文件解密 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Ryan Feng" />
+            
+              <p class="site-author-name" itemprop="name">Ryan Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ryan Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ZtouxCtFKgWUsWjPE6USTwUR-MdYXbMMI", "GBxIlDivCU1zGIKSPhlMbun3");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="SQL," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1、查找目前SQL Server所执行的SQL语法，并展示资源情况：   1234567891011121314151617181920212223242526272829SELECT  s2.dbid ,         DB_NAME(s2.dbid) AS [数据库名] ,         --s1.sql_handle ,         ( SELECT TOP 1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL 几个查看性能的语句">
+<meta property="og:url" content="https://ryanfeng1024.github.io/2017/05/08/SQLPerformance/index.html">
+<meta property="og:site_name" content="Ryan’s Blog">
+<meta property="og:description" content="1、查找目前SQL Server所执行的SQL语法，并展示资源情况：   1234567891011121314151617181920212223242526272829SELECT  s2.dbid ,         DB_NAME(s2.dbid) AS [数据库名] ,         --s1.sql_handle ,         ( SELECT TOP 1">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-05-09T01:18:02.000Z">
+<meta property="article:modified_time" content="2017-05-09T01:18:02.000Z">
+<meta property="article:author" content="Ryan Feng">
+<meta property="article:tag" content="SQL">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ryanfeng1024.github.io/2017/05/08/SQLPerformance/"/>
+
+
+
+
+
+  <title>SQL 几个查看性能的语句 | Ryan’s Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Ryan’s Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ryanfeng1024.github.io/2017/05/08/SQLPerformance/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ryan Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryan’s Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SQL 几个查看性能的语句</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-08T21:18:02-04:00">
+                2017-05-08
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2017-05-08T21:18:02-04:00">
+                2017-05-08
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/05/08/SQLPerformance/" class="leancloud_visitors" data-flag-title="SQL 几个查看性能的语句">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>1、查找目前SQL Server所执行的SQL语法，并展示资源情况：  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span>  s2.dbid ,</span><br><span class="line">         DB_NAME(s2.dbid) <span class="keyword">AS</span> [数据库名] ,</span><br><span class="line">         <span class="comment">--s1.sql_handle ,</span></span><br><span class="line">         ( <span class="keyword">SELECT</span> TOP <span class="number">1</span></span><br><span class="line">                     <span class="built_in">SUBSTRING</span>(s2.text, statement_start_offset <span class="operator">/</span> <span class="number">2</span> <span class="operator">+</span> <span class="number">1</span>,</span><br><span class="line">                               ( ( <span class="keyword">CASE</span> <span class="keyword">WHEN</span> statement_end_offset <span class="operator">=</span> <span class="number">-1</span></span><br><span class="line">                                        <span class="keyword">THEN</span> ( LEN(<span class="keyword">CONVERT</span>(NVARCHAR(MAX), s2.text))</span><br><span class="line">                                               <span class="operator">*</span> <span class="number">2</span> )</span><br><span class="line">                                        <span class="keyword">ELSE</span> statement_end_offset</span><br><span class="line">                                   <span class="keyword">END</span> ) <span class="operator">-</span> statement_start_offset ) <span class="operator">/</span> <span class="number">2</span> <span class="operator">+</span> <span class="number">1</span>)</span><br><span class="line">         ) <span class="keyword">AS</span> [语句] ,</span><br><span class="line">         execution_count <span class="keyword">AS</span> [执行次数] ,</span><br><span class="line">         last_execution_time <span class="keyword">AS</span> [上次开始执行计划的时间] ,</span><br><span class="line">         total_worker_time <span class="keyword">AS</span> [自编译以来执行所用的 CPU 时间总量（微秒）] ,</span><br><span class="line">         last_worker_time <span class="keyword">AS</span> [上次执行计划所用的 CPU 时间（微秒）] ,</span><br><span class="line">         min_worker_time <span class="keyword">AS</span> [单次执行期间曾占用的最小 CPU 时间（微秒）] ,</span><br><span class="line">         max_worker_time <span class="keyword">AS</span> [单次执行期间曾占用的最大 CPU 时间（微秒）] ,</span><br><span class="line">         total_logical_reads <span class="keyword">AS</span> [总逻辑读] ,</span><br><span class="line">         last_logical_reads <span class="keyword">AS</span> [上次逻辑读] ,</span><br><span class="line">         min_logical_reads <span class="keyword">AS</span> [最少逻辑读] ,</span><br><span class="line">         max_logical_reads <span class="keyword">AS</span> [最大逻辑读] ,</span><br><span class="line">         total_logical_writes <span class="keyword">AS</span> [总逻辑写] ,</span><br><span class="line">         last_logical_writes <span class="keyword">AS</span> [上次逻辑写] ,</span><br><span class="line">         min_logical_writes <span class="keyword">AS</span> [最小逻辑写] ,</span><br><span class="line">         max_logical_writes <span class="keyword">AS</span> [最大逻辑写]</span><br><span class="line"> <span class="keyword">FROM</span>    sys.dm_exec_query_stats <span class="keyword">AS</span> s1</span><br><span class="line">         <span class="keyword">CROSS</span> APPLY sys.dm_exec_sql_text(sql_handle) <span class="keyword">AS</span> s2</span><br><span class="line"> <span class="keyword">WHERE</span>   s2.objectid <span class="keyword">IS</span> <span class="keyword">NULL</span></span><br><span class="line"> <span class="keyword">ORDER</span> <span class="keyword">BY</span> last_worker_time <span class="keyword">DESC</span></span><br></pre></td></tr></table></figure>
+<br />
+
+<p>2、展示耗时查询：  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- List expensive queries </span></span><br><span class="line"> <span class="keyword">DECLARE</span> <span class="variable">@MinExecutions</span> <span class="type">int</span>; </span><br><span class="line"> <span class="keyword">SET</span> <span class="variable">@MinExecutions</span> <span class="operator">=</span> <span class="number">5</span> </span><br><span class="line">   </span><br><span class="line"> <span class="keyword">SELECT</span> EQS.total_worker_time <span class="keyword">AS</span> TotalWorkerTime </span><br><span class="line">       ,EQS.total_logical_reads <span class="operator">+</span> EQS.total_logical_writes <span class="keyword">AS</span> TotalLogicalIO </span><br><span class="line">       ,EQS.execution_count <span class="keyword">As</span> ExeCnt </span><br><span class="line">       ,EQS.last_execution_time <span class="keyword">AS</span> LastUsage </span><br><span class="line">       ,EQS.total_worker_time <span class="operator">/</span> EQS.execution_count <span class="keyword">as</span> AvgCPUTimeMiS </span><br><span class="line">       ,(EQS.total_logical_reads <span class="operator">+</span> EQS.total_logical_writes) <span class="operator">/</span> EQS.execution_count  </span><br><span class="line">        <span class="keyword">AS</span> AvgLogicalIO </span><br><span class="line">       ,DB.name <span class="keyword">AS</span> DatabaseName </span><br><span class="line">       ,<span class="built_in">SUBSTRING</span>(EST.text </span><br><span class="line">                 ,<span class="number">1</span> <span class="operator">+</span> EQS.statement_start_offset <span class="operator">/</span> <span class="number">2</span> </span><br><span class="line">                 ,(<span class="keyword">CASE</span> <span class="keyword">WHEN</span> EQS.statement_end_offset <span class="operator">=</span> <span class="number">-1</span>  </span><br><span class="line">                        <span class="keyword">THEN</span> LEN(<span class="keyword">convert</span>(nvarchar(max), EST.text)) <span class="operator">*</span> <span class="number">2</span>  </span><br><span class="line">                        <span class="keyword">ELSE</span> EQS.statement_end_offset <span class="keyword">END</span>  </span><br><span class="line">                  <span class="operator">-</span> EQS.statement_start_offset) <span class="operator">/</span> <span class="number">2</span> </span><br><span class="line">                 ) <span class="keyword">AS</span> SqlStatement </span><br><span class="line">       <span class="comment">-- Optional with Query plan; remove comment to show, but then the query takes !!much longer time!! </span></span><br><span class="line">       <span class="comment">--,EQP.[query_plan] AS [QueryPlan] </span></span><br><span class="line"> <span class="keyword">FROM</span> sys.dm_exec_query_stats <span class="keyword">AS</span> EQS </span><br><span class="line">      <span class="keyword">CROSS</span> APPLY sys.dm_exec_sql_text(EQS.sql_handle) <span class="keyword">AS</span> EST </span><br><span class="line">      <span class="keyword">CROSS</span> APPLY sys.dm_exec_query_plan(EQS.plan_handle) <span class="keyword">AS</span> EQP </span><br><span class="line">      <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> sys.databases <span class="keyword">AS</span> DB </span><br><span class="line">          <span class="keyword">ON</span> EST.dbid <span class="operator">=</span> DB.database_id      </span><br><span class="line"> <span class="keyword">WHERE</span> EQS.execution_count <span class="operator">&gt;</span> <span class="variable">@MinExecutions</span> </span><br><span class="line">       <span class="keyword">AND</span> EQS.last_execution_time <span class="operator">&gt;</span> DATEDIFF(<span class="keyword">MONTH</span>, <span class="number">-1</span>, GETDATE()) </span><br><span class="line"> <span class="keyword">ORDER</span> <span class="keyword">BY</span> AvgLogicalIo <span class="keyword">DESC</span> </span><br><span class="line">         ,AvgCPUTimeMiS <span class="keyword">DESC</span></span><br></pre></td></tr></table></figure>
+<br />
+
+<p>3、当前进程及其语句：  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- Current processes and their SQL statements </span></span><br><span class="line"> <span class="keyword">SELECT</span> PRO.loginame <span class="keyword">AS</span> LoginName </span><br><span class="line">       ,DB.name <span class="keyword">AS</span> DatabaseName </span><br><span class="line">       ,PRO.[status] <span class="keyword">as</span> ProcessStatus </span><br><span class="line">       ,PRO.cmd <span class="keyword">AS</span> Command </span><br><span class="line">       ,PRO.last_batch <span class="keyword">AS</span> LastBatch </span><br><span class="line">       ,PRO.cpu <span class="keyword">AS</span> Cpu </span><br><span class="line">       ,PRO.physical_io <span class="keyword">AS</span> PhysicalIo </span><br><span class="line">       ,SES.row_count <span class="keyword">AS</span> [RowCount] </span><br><span class="line">       ,STM.[text] <span class="keyword">AS</span> SQLStatement </span><br><span class="line"> <span class="keyword">FROM</span> sys.sysprocesses <span class="keyword">AS</span> PRO </span><br><span class="line">      <span class="keyword">INNER</span> <span class="keyword">JOIN</span> sys.databases <span class="keyword">AS</span> DB </span><br><span class="line">          <span class="keyword">ON</span> PRO.dbid <span class="operator">=</span> DB.database_id </span><br><span class="line">      <span class="keyword">INNER</span> <span class="keyword">JOIN</span> sys.dm_exec_sessions <span class="keyword">AS</span> SES </span><br><span class="line">         <span class="keyword">ON</span> PRO.spid <span class="operator">=</span> SES.session_id </span><br><span class="line">      <span class="keyword">CROSS</span> APPLY sys.dm_exec_sql_text(PRO.sql_handle) <span class="keyword">AS</span> STM      </span><br><span class="line"> <span class="keyword">WHERE</span> PRO.spid <span class="operator">&gt;=</span> <span class="number">50</span>  <span class="comment">-- Exclude system processes </span></span><br><span class="line"> <span class="keyword">ORDER</span> <span class="keyword">BY</span> PRO.physical_io <span class="keyword">DESC</span> </span><br><span class="line">         ,PRO.cpu <span class="keyword">DESC</span>;</span><br></pre></td></tr></table></figure>
+<br />
+
+<p>4、存储过程执行情况：  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- Stored Procedure Execution Statistics </span></span><br><span class="line"> <span class="keyword">SELECT</span> ISNULL(DBS.name, <span class="string">&#x27;&#x27;</span>) <span class="keyword">AS</span> DatabaseName </span><br><span class="line">       ,OBJECT_NAME(EPS.object_id, EPS.database_id) <span class="keyword">AS</span> ObjectName </span><br><span class="line">       ,EPS.cached_time <span class="keyword">AS</span> CachedTime </span><br><span class="line">       ,EPS.last_elapsed_time <span class="keyword">AS</span> LastElapsedTime </span><br><span class="line">       ,EPS.execution_count <span class="keyword">AS</span> ExecutionCount </span><br><span class="line">       ,EPS.total_worker_time <span class="operator">/</span> EPS.execution_count <span class="keyword">AS</span> AvgWorkerTime </span><br><span class="line">       ,EPS.total_elapsed_time <span class="operator">/</span> EPS.execution_count <span class="keyword">AS</span> AvgElapsedTime </span><br><span class="line">       ,(EPS.total_logical_reads <span class="operator">+</span> EPS.total_logical_writes) </span><br><span class="line">        <span class="operator">/</span> EPS.execution_count <span class="keyword">AS</span> AvgLogicalIO </span><br><span class="line"> <span class="keyword">FROM</span> sys.dm_exec_procedure_stats <span class="keyword">AS</span> EPS </span><br><span class="line">      <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> sys.databases <span class="keyword">AS</span> DBS </span><br><span class="line">          <span class="keyword">ON</span> EPS.database_id <span class="operator">=</span> DBS.database_id </span><br><span class="line"> <span class="keyword">ORDER</span> <span class="keyword">BY</span> AvgWorkerTime <span class="keyword">DESC</span>;</span><br></pre></td></tr></table></figure>
+<br />
+
+<p>5、开销较大的查询：  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> 开销较大的查询</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> <span class="keyword">SELECT</span>  ss.SUM_execution_count ,</span><br><span class="line">         t.text ,</span><br><span class="line">         ss.SUM_total_elapsed_time ,</span><br><span class="line">         ss.sum_total_worker_time ,</span><br><span class="line">         ss.sum_total_logical_reads ,</span><br><span class="line">         ss.sum_total_logical_writes</span><br><span class="line"> <span class="keyword">FROM</span>    ( <span class="keyword">SELECT</span>    S.plan_handle ,</span><br><span class="line">                     <span class="built_in">SUM</span>(s.execution_count) SUM_Execution_count ,</span><br><span class="line">                     <span class="built_in">SUM</span>(s.total_elapsed_time) SUM_total_elapsed_time ,</span><br><span class="line">                     <span class="built_in">SUM</span>(s.total_worker_time) SUM_total_worker_time ,</span><br><span class="line">                     <span class="built_in">SUM</span>(s.total_logical_reads) SUM_total_logical_reads ,</span><br><span class="line">                     <span class="built_in">SUM</span>(s.total_logical_writes) SUM_total_logical_writes</span><br><span class="line">           <span class="keyword">FROM</span>      sys.dm_exec_query_stats s</span><br><span class="line">           <span class="keyword">GROUP</span> <span class="keyword">BY</span>  S.plan_handle</span><br><span class="line">         ) <span class="keyword">AS</span> ss</span><br><span class="line">         <span class="keyword">CROSS</span> APPLY sys.dm_exec_sql_text(ss.plan_handle) t</span><br><span class="line"> <span class="keyword">ORDER</span> <span class="keyword">BY</span> sum_total_logical_reads <span class="keyword">DESC</span>  </span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SQL/" rel="tag"># SQL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/09/SQLSplit/" rel="next" title="SQL Server Split函数，将一串字符串返回成table">
+                <i class="fa fa-chevron-left"></i> SQL Server Split函数，将一串字符串返回成table
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/31/CSharpKeyboard/" rel="prev" title="C# 调用win32 API,实现热键注册的简单调用，模拟键盘输入">
+                C# 调用win32 API,实现热键注册的简单调用，模拟键盘输入 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Ryan Feng" />
+            
+              <p class="site-author-name" itemprop="name">Ryan Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ryan Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ZtouxCtFKgWUsWjPE6USTwUR-MdYXbMMI", "GBxIlDivCU1zGIKSPhlMbun3");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

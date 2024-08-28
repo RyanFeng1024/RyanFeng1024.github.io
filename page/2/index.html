@@ -82,7 +82,7 @@
 <meta name="description" content="Ryan Feng’s blog. Zoom blog">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ryan’s Blog">
-<meta property="og:url" content="https://ryanfeng1024.github.io/index.html">
+<meta property="og:url" content="https://ryanfeng1024.github.io/page/2/index.html">
 <meta property="og:site_name" content="Ryan’s Blog">
 <meta property="og:description" content="Ryan Feng’s blog. Zoom blog">
 <meta property="og:locale" content="en_US">
@@ -117,7 +117,7 @@
 
 
 
-  <link rel="canonical" href="https://ryanfeng1024.github.io/"/>
+  <link rel="canonical" href="https://ryanfeng1024.github.io/page/2/"/>
 
 
 
@@ -261,7 +261,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ryanfeng1024.github.io/2020/10/29/CSharpGenMachineCode/">
+    <link itemprop="mainEntityOfPage" href="https://ryanfeng1024.github.io/2019/03/14/SearchKwInProcOrView/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ryan Feng">
@@ -280,7 +280,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/10/29/CSharpGenMachineCode/" itemprop="url">C# WIN 生成机器码</a></h1>
+                <a class="post-title-link" href="/2019/03/14/SearchKwInProcOrView/" itemprop="url">SQL SERVER 查看所有存储过程或视图里 包含某个关键字的查询语句</a></h1>
         
 
         <div class="post-meta">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-10-29T13:59:03-04:00">
-                2020-10-29
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-14T16:33:46-04:00">
+                2019-03-14
               </time>
             
 
@@ -308,8 +308,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2020-10-29T13:59:03-04:00">
-                2020-10-29
+              <time title="Post modified" itemprop="dateModified" datetime="2019-03-14T16:33:46-04:00">
+                2019-03-14
               </time>
             
           </span>
@@ -322,7 +322,7 @@
 
           
           
-             <span id="/2020/10/29/CSharpGenMachineCode/" class="leancloud_visitors" data-flag-title="C# WIN 生成机器码">
+             <span id="/2019/03/14/SearchKwInProcOrView/" class="leancloud_visitors" data-flag-title="SQL SERVER 查看所有存储过程或视图里 包含某个关键字的查询语句">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -355,12 +355,15 @@
       
         
           
-          内容归档，不多赘述。  
-123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112using System;using System.Collections.Generic;using System.
+          123456SELECT name,       type_descFROM   sys.all_sql_modules s       INNER JOIN sys.all_objects o ON s.object_id = o.object_idWHERE  definition LIKE &#x27;%关键字%&#x27;ORDER BY type_desc, name;
+
+12SELECT name, xtype FROM sysobjects o, syscomments sWHERE o.id = s.id AND text LIKE &#x27;%agent%&#x27;;
+
+
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/10/29/CSharpGenMachineCode/#more" rel="contents">
+            <a class="btn" href="/2019/03/14/SearchKwInProcOrView/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -411,7 +414,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ryanfeng1024.github.io/2020/08/19/m3u8-download/">
+    <link itemprop="mainEntityOfPage" href="https://ryanfeng1024.github.io/2017/12/31/CSharpKeyboard/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ryan Feng">
@@ -430,7 +433,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/08/19/m3u8-download/" itemprop="url">\[C#/Java\] 针对 QINIU-PROTECTION-10 的m3u8视频文件解密</a></h1>
+                <a class="post-title-link" href="/2017/12/31/CSharpKeyboard/" itemprop="url">C# 调用win32 API,实现热键注册的简单调用，模拟键盘输入</a></h1>
         
 
         <div class="post-meta">
@@ -442,8 +445,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-08-19T22:40:15-04:00">
-                2020-08-19
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-31T12:05:32-05:00">
+                2017-12-31
               </time>
             
 
@@ -458,8 +461,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2020-08-19T22:40:15-04:00">
-                2020-08-19
+              <time title="Post modified" itemprop="dateModified" datetime="2017-12-31T12:05:32-05:00">
+                2017-12-31
               </time>
             
           </span>
@@ -472,7 +475,7 @@
 
           
           
-             <span id="/2020/08/19/m3u8-download/" class="leancloud_visitors" data-flag-title="\[C#/Java\] 针对 QINIU-PROTECTION-10 的m3u8视频文件解密">
+             <span id="/2017/12/31/CSharpKeyboard/" class="leancloud_visitors" data-flag-title="C# 调用win32 API,实现热键注册的简单调用，模拟键盘输入">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -505,18 +508,11 @@
       
         
           
-          源码地址：https://github.com/RyanFeng1024/m3u8_download  
-
-
-今年上网课很流行，有些在线的课程视频想下载下来到本地看，发现视频的链接是m3u8格式的，下载下来后，提取出视频切片的各个.ts文件的链接，把这些视频片段下载到本地后，却播放不了。于是就花点时间研究研究。网上了解了一下情况，知道视频是加密的， 不过搜了一大圈，都是讲的加密方式为 METHOD&#x3D;AES-128 的解密方法，可我下载的m3u8文件打开看是 METHOD&#x3D;QINIU-PROTECTION-10  
-
-
-
-了解到解密视频需要key和IV， 我们可以看到 IV在
+          12345678910111213141516171819202122232425262728293031class HotKey&#123;	//如果函数执行成功，返回值不为0。	//如果函数执行失败，返回值为0。要得到扩展错误信息，调用GetLastError。	[DllImport(&quot;user32.dll&quot;, SetLastError = true)]	public static extern bool RegisterHotKey(		IntPtr hWnd,                //要定义热键的窗口的句柄		int id,                
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/08/19/m3u8-download/#more" rel="contents">
+            <a class="btn" href="/2017/12/31/CSharpKeyboard/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -567,7 +563,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ryanfeng1024.github.io/2020/08/08/quartz-net/">
+    <link itemprop="mainEntityOfPage" href="https://ryanfeng1024.github.io/2017/05/08/SQLPerformance/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ryan Feng">
@@ -586,7 +582,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/08/08/quartz-net/" itemprop="url">Quartz.net的快速简单上手使用以及防止IIS回收停止Job的处理</a></h1>
+                <a class="post-title-link" href="/2017/05/08/SQLPerformance/" itemprop="url">SQL 几个查看性能的语句</a></h1>
         
 
         <div class="post-meta">
@@ -598,8 +594,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-08-08T18:07:59-04:00">
-                2020-08-08
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-08T21:18:02-04:00">
+                2017-05-08
               </time>
             
 
@@ -614,8 +610,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2020-08-08T18:07:59-04:00">
-                2020-08-08
+              <time title="Post modified" itemprop="dateModified" datetime="2017-05-08T21:18:02-04:00">
+                2017-05-08
               </time>
             
           </span>
@@ -628,7 +624,7 @@
 
           
           
-             <span id="/2020/08/08/quartz-net/" class="leancloud_visitors" data-flag-title="Quartz.net的快速简单上手使用以及防止IIS回收停止Job的处理">
+             <span id="/2017/05/08/SQLPerformance/" class="leancloud_visitors" data-flag-title="SQL 几个查看性能的语句">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -661,15 +657,12 @@
       
         
           
-          工作中偶尔会遇到需要定时处理的任务，最近工作上有个需求，要从一个第三方那边获取记录数据，然后解析数据文件入库。第三方那边数据提供方式是FTP形式，存储的xml文件。所以打算用定时任务去处理，先写了个Demo试试手，在此记录一下。
-1、创建项目后，引用Quartz.net包，我用的目前最新的3.1.0版本；还有log4net引用，配置好日志  
-  
-2、创建Quartz定时任务的帮助类文件，下面这个是我网上找的，就直接拿来用了  
-1234567891011121314151617181920212223242526272829303132333435363738394041424344454
+          1、查找目前SQL Server所执行的SQL语法，并展示资源情况：  
+1234567891011121314151617181920212223242526272829SELECT  s2.dbid ,         DB_NAME(s2.dbid) AS [数据库名] ,         --s1.sql_handle ,         ( SELECT TOP 1                     SUBSTRING(s2.text, statement_start_offset / 2 + 1,                               ( ( CASE 
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/08/08/quartz-net/#more" rel="contents">
+            <a class="btn" href="/2017/05/08/SQLPerformance/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -720,7 +713,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ryanfeng1024.github.io/2020/03/18/HideComplaintInWX/">
+    <link itemprop="mainEntityOfPage" href="https://ryanfeng1024.github.io/2017/02/09/SQLSplit/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ryan Feng">
@@ -739,7 +732,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/03/18/HideComplaintInWX/" itemprop="url">最新屏蔽微信举报方法</a></h1>
+                <a class="post-title-link" href="/2017/02/09/SQLSplit/" itemprop="url">SQL Server Split函数，将一串字符串返回成table</a></h1>
         
 
         <div class="post-meta">
@@ -751,8 +744,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-18T14:16:18-04:00">
-                2020-03-18
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-09T13:19:28-05:00">
+                2017-02-09
               </time>
             
 
@@ -767,8 +760,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2020-03-18T14:16:18-04:00">
-                2020-03-18
+              <time title="Post modified" itemprop="dateModified" datetime="2017-02-09T13:19:28-05:00">
+                2017-02-09
               </time>
             
           </span>
@@ -781,7 +774,7 @@
 
           
           
-             <span id="/2020/03/18/HideComplaintInWX/" class="leancloud_visitors" data-flag-title="最新屏蔽微信举报方法">
+             <span id="/2017/02/09/SQLSplit/" class="leancloud_visitors" data-flag-title="SQL Server Split函数，将一串字符串返回成table">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -814,18 +807,12 @@
       
         
           
-          在做微信投票，小说阅读类，以及大部分推广类微信H5页面经常会遇到因为被举报投诉导致页面被微信封杀的情况。因为微信是处理投诉举报是非人工，所以一旦这种举报投诉多次域名就会百分百被封杀。申诉等处理又是遥遥无期，基本希望渺茫，严重影响了正常推广的拓展。如果我们能够屏蔽掉微信的举报投诉按钮的话，就能够从源头彻底杜绝了恶意举报投诉的情况，经多方寻找和研究最终找到了能够完美屏蔽到掉微信举报投诉按钮的方法。
-
-
-演示效果  
-
-1，屏蔽微信举报投诉按钮通用Android和苹果。
-2，源码已进行兼容性优化，不会与页面代码发生冲突，可放心使用。
-3，隐藏举报投诉按钮后只显示必要的分享按钮，不影响正常分享功能使用
+          写法一：
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354 CREATE FUNCTION [dbo].[Split] (     @str      VARCHAR(MAX),        --传进来的字符串     @char     VARCHAR(2000)        --分割符 ) RETURNS @t TABLE        --定义一个虚拟表          (             id INT IDENTITY(1,
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/03/18/HideComplaintInWX/#more" rel="contents">
+            <a class="btn" href="/2017/02/09/SQLSplit/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -876,7 +863,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ryanfeng1024.github.io/2020/03/14/MVCError/">
+    <link itemprop="mainEntityOfPage" href="https://ryanfeng1024.github.io/2016/11/30/SQLFindAllColumnandType/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ryan Feng">
@@ -895,7 +882,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/03/14/MVCError/" itemprop="url">MVC、Web API 请求接口报错“自定义错误模块不能识别此错误。”解决</a></h1>
+                <a class="post-title-link" href="/2016/11/30/SQLFindAllColumnandType/" itemprop="url">SQL Server中使用SQL语句查询某表的所有字段及数据类型</a></h1>
         
 
         <div class="post-meta">
@@ -907,8 +894,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-14T10:04:05-04:00">
-                2020-03-14
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-30T13:27:28-05:00">
+                2016-11-30
               </time>
             
 
@@ -923,8 +910,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2020-03-14T10:04:05-04:00">
-                2020-03-14
+              <time title="Post modified" itemprop="dateModified" datetime="2016-11-30T13:27:28-05:00">
+                2016-11-30
               </time>
             
           </span>
@@ -937,7 +924,7 @@
 
           
           
-             <span id="/2020/03/14/MVCError/" class="leancloud_visitors" data-flag-title="MVC、Web API 请求接口报错“自定义错误模块不能识别此错误。”解决">
+             <span id="/2016/11/30/SQLFindAllColumnandType/" class="leancloud_visitors" data-flag-title="SQL Server中使用SQL语句查询某表的所有字段及数据类型">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -970,15 +957,12 @@
       
         
           
-          环境： Win server 2008 R2，IIS7
-错误原因：使用了自定义的状态响应码。
-最近在做接口限流的处理，使用的现成的插件。引入进项目后，本地测试正常，放到服务器上后，请求受限返回响应时 直接返回自定义错误模块不能识别此错误。 
-  
-排查半天，添加异常日志记录，并没有发现异常。。经过仔细观察和搜索后终于找到原因。是因为在请求次数达到受限值时，过滤器返回响应的时候，状态码是自定义的 429 Too Many Requests ，对于本地开发是好的. 本地IIS 也正常。 放在 win server 2008R2 服务器  II7上就不行， 可能是IIS版本太老旧 不支持自定义的状态
-          ...
+          SQL Server中使用SQL语句查询某表的所有字段及数据类型
+123456SELECT  name AS column_name ,        TYPE_NAME(system_type_id) AS column_type ,        max_length ,        is_nullableFROM    sys.columnsWHERE   object_id = OBJECT_ID(N&#x27;customerbase&#x27;)  --customerbase 为表名
+          
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/03/14/MVCError/#more" rel="contents">
+            <a class="btn" href="/2016/11/30/SQLFindAllColumnandType/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1029,7 +1013,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ryanfeng1024.github.io/2019/12/21/WXShortUrl/">
+    <link itemprop="mainEntityOfPage" href="https://ryanfeng1024.github.io/2016/11/30/SQLFindColumn/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ryan Feng">
@@ -1048,7 +1032,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/12/21/WXShortUrl/" itemprop="url">获取微信短链接的官方接口</a></h1>
+                <a class="post-title-link" href="/2016/11/30/SQLFindColumn/" itemprop="url">SQL Server 查询数据库中所有指定类型的字段名称和所在的表名</a></h1>
         
 
         <div class="post-meta">
@@ -1060,8 +1044,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-21T18:30:05-05:00">
-                2019-12-21
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-30T13:22:28-05:00">
+                2016-11-30
               </time>
             
 
@@ -1076,8 +1060,8 @@
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-12-21T18:30:05-05:00">
-                2019-12-21
+              <time title="Post modified" itemprop="dateModified" datetime="2016-11-30T13:22:28-05:00">
+                2016-11-30
               </time>
             
           </span>
@@ -1090,7 +1074,7 @@
 
           
           
-             <span id="/2019/12/21/WXShortUrl/" class="leancloud_visitors" data-flag-title="获取微信短链接的官方接口">
+             <span id="/2016/11/30/SQLFindColumn/" class="leancloud_visitors" data-flag-title="SQL Server 查询数据库中所有指定类型的字段名称和所在的表名">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1123,20 +1107,12 @@
       
         
           
-          要想获取微信生成的短链接，需要有一个公众号，用到公众号里的 appId, appSecret. 注意 这里只能是用微信认证的服务号的 appId, appSecret. 如果是开放平台或者其他的 都无法生成短连接。官方文档: 点击查看  
-
-
-第一步，GET方式请求接口 获取 access_token
-https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= YOUR_APPID&amp;secret&#x3D; YOUR_APPSECRET  
-  
-
-
-返回说明  
-正常情况下，微信会返回
+          SQL Server 查询数据库中所有指定类型的字段名称和所在的表名
+123456789101112--查询数据库中所有指定类型的字段名称和所在的表名--eg: 下面查的是当前数据库中 所有字段类型为 nvarchar(max) 的字段名和表名SELECT  cols.object_id ,        cols.column_id ,        cols.name AS ColumnName ,        TYPE_NAME(cols.system_type_id) AS ColumnType ,        cols.max_length ,        obj.name A
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/12/21/WXShortUrl/#more" rel="contents">
+            <a class="btn" href="/2016/11/30/SQLFindColumn/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1187,7 +1163,7 @@ https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= 
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ryanfeng1024.github.io/2019/06/05/CMDNote/">
+    <link itemprop="mainEntityOfPage" href="https://ryanfeng1024.github.io/2016/11/27/SQLServer2008R2-install/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ryan Feng">
@@ -1206,7 +1182,7 @@ https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= 
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/06/05/CMDNote/" itemprop="url">Window 通过cmd查看端口占用、相应进程、杀死进程</a></h1>
+                <a class="post-title-link" href="/2016/11/27/SQLServer2008R2-install/" itemprop="url">安装了SQL2005再安装SQL 2008R2，提示此计算机上安装了 Microsoft Visual Studio 2008 的早期版本和检查是否安装了 SQL Server 2005 Express 工具的解决方案</a></h1>
         
 
         <div class="post-meta">
@@ -1218,8 +1194,8 @@ https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= 
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-05T14:15:19-04:00">
-                2019-06-05
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-27T14:57:28-05:00">
+                2016-11-27
               </time>
             
 
@@ -1234,8 +1210,8 @@ https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= 
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-05T14:15:19-04:00">
-                2019-06-05
+              <time title="Post modified" itemprop="dateModified" datetime="2016-11-27T14:57:28-05:00">
+                2016-11-27
               </time>
             
           </span>
@@ -1248,7 +1224,7 @@ https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= 
 
           
           
-             <span id="/2019/06/05/CMDNote/" class="leancloud_visitors" data-flag-title="Window 通过cmd查看端口占用、相应进程、杀死进程">
+             <span id="/2016/11/27/SQLServer2008R2-install/" class="leancloud_visitors" data-flag-title="安装了SQL2005再安装SQL 2008R2，提示此计算机上安装了 Microsoft Visual Studio 2008 的早期版本和检查是否安装了 SQL Server 2005 Express 工具的解决方案">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1281,21 +1257,14 @@ https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= 
       
         
           
-          一、 查看所有进程占用的端口 在开始-运行-cmd,输入： netstat –ano  可以查看所有进程
+          工作电脑上安装了SQL 2005， 但是客户电脑上安装的是SQL 2008R2，有时候连接他们的库调试没法连接，很不方便。然后又安装了个SQL2008 R2，期间遇到这两个问题，网上搜索了一下收到了解决方案，不用安装VS 2008 SP1，不用卸载SQL Server 2005 Express 工具，只需要修改注册表即可。  
   
-
-
-二、查看占用指定端口的程序 当你在用tomcat发布程序时，经常会遇到端口被占用的情况，我们想知道是哪个程序或进程占用了端口，可以用该命令  netstat –ano|findstr [指定端口号]   
-如：查询占用了8080端口的进程： netstat -ano|findstr &quot;8080&quot; 
-  
-
-
-三、通过任务管理器杀死相关的进程 方法一：使用任务管理器杀死进程  
-打开任务管理器-&gt;查看-&gt;选择列-&gt;然后勾选PID选项，回到任务管
+提示错误：此计算机上安装了 Microsoft Visual Studio 2008 的早期版本。请在安装 SQL Server 2008 前将 VS2008 升级到 SP1。
+解决方法： 修改注册表。运行注册表regedit，将HKEYLocalMachine/
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/06/05/CMDNote/#more" rel="contents">
+            <a class="btn" href="/2016/11/27/SQLServer2008R2-install/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1346,7 +1315,7 @@ https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= 
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ryanfeng1024.github.io/2019/06/03/WXGuard-Design/">
+    <link itemprop="mainEntityOfPage" href="https://ryanfeng1024.github.io/2016/11/27/stopH5BodySlide/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ryan Feng">
@@ -1365,7 +1334,7 @@ https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= 
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/06/03/WXGuard-Design/" itemprop="url">微信跳转、微信防封系统的实现和设计</a></h1>
+                <a class="post-title-link" href="/2016/11/27/stopH5BodySlide/" itemprop="url">如何阻止h5body的滑动</a></h1>
         
 
         <div class="post-meta">
@@ -1377,8 +1346,8 @@ https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= 
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-03T17:22:46-04:00">
-                2019-06-03
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-27T14:37:28-05:00">
+                2016-11-27
               </time>
             
 
@@ -1393,8 +1362,8 @@ https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= 
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-06-03T17:22:46-04:00">
-                2019-06-03
+              <time title="Post modified" itemprop="dateModified" datetime="2016-11-27T14:45:28-05:00">
+                2016-11-27
               </time>
             
           </span>
@@ -1407,7 +1376,7 @@ https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= 
 
           
           
-             <span id="/2019/06/03/WXGuard-Design/" class="leancloud_visitors" data-flag-title="微信跳转、微信防封系统的实现和设计">
+             <span id="/2016/11/27/stopH5BodySlide/" class="leancloud_visitors" data-flag-title="如何阻止h5body的滑动">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1440,17 +1409,11 @@ https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= 
       
         
           
-          前面有发过两篇关于 微信域名防封、封禁监测和微信跳转的探讨（见下方链接），一些基本原理大概都知道了，所以市面上那些微信跳转系统，微信域名防封系统，其实也就知道大概是怎么回事了。我们自己也可以动手设计开发一个这样的系统出来。在某些情况下多少也还是有点用的。
-《微信域名检测、防封，微信跳转技术揭秘（一） – 域名检测原理及防封方案》  
-《微信域名检测、防封，微信跳转技术揭秘（二） – 微信跳转揭秘》
- 不废话了，直接思考一下这个实现思路吧。这个系统主要是两大块，地址防封和微信跳转。跳转这个应用起来简单，主要来看看域名防封的防御方案吧.
-
-网上搜集的一些资料，整理了一下，总结出以下几点：  
-  
+          1234567// 禁止document.body.style.overflow = &#x27;hidden&#x27;;function _preventDefault(e) &#123; e.preventDefault(); &#125;window.addEventListener(&#x27;touchmove&#x27;, _preventDefault);// 恢复document.body.style.overflow = &#x27;auto&#x27;;window.removeEventListener(&#x27;touchmove&#x27;, _preventDe
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/06/03/WXGuard-Design/#more" rel="contents">
+            <a class="btn" href="/2016/11/27/stopH5BodySlide/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1501,7 +1464,7 @@ https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= 
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ryanfeng1024.github.io/2019/05/15/WXGuard-2/">
+    <link itemprop="mainEntityOfPage" href="https://ryanfeng1024.github.io/2016/11/27/sql-statistic/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ryan Feng">
@@ -1520,7 +1483,7 @@ https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= 
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/05/15/WXGuard-2/" itemprop="url">微信域名检测、防封，微信跳转技术揭秘 (二) -- 微信跳转揭秘</a></h1>
+                <a class="post-title-link" href="/2016/11/27/sql-statistic/" itemprop="url">SQL周、日、月、年数据统计</a></h1>
         
 
         <div class="post-meta">
@@ -1532,8 +1495,8 @@ https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= 
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-15T16:38:10-04:00">
-                2019-05-15
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-27T14:18:01-05:00">
+                2016-11-27
               </time>
             
 
@@ -1548,8 +1511,8 @@ https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= 
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-05-15T16:38:10-04:00">
-                2019-05-15
+              <time title="Post modified" itemprop="dateModified" datetime="2016-11-27T14:33:01-05:00">
+                2016-11-27
               </time>
             
           </span>
@@ -1562,7 +1525,7 @@ https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= 
 
           
           
-             <span id="/2019/05/15/WXGuard-2/" class="leancloud_visitors" data-flag-title="微信域名检测、防封，微信跳转技术揭秘 (二) -- 微信跳转揭秘">
+             <span id="/2016/11/27/sql-statistic/" class="leancloud_visitors" data-flag-title="SQL周、日、月、年数据统计">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1595,14 +1558,12 @@ https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= 
       
         
           
-          前面提到了微信域名的封禁原理和检测手段以及一些基本防范的方案。详见《微信域名检测、防封，微信跳转技术揭秘 (一) – 域名检测原理及防封方案》
-要想让地址在微信里不被封禁，或者说 尽可能的存活时间久一点，那么需要注意以下几点：
-1、微信里的入口域名最好用备案域名。并且要加白名单2、不要QQ和微信同时用一个链接去推广3、网站内容 关键字、描述 图片等，不能出现敏感词4、屏蔽举报按钮（此方法失效，尝试过，但是对于现在的微信而言没用.. 还是可以举报）5、结合微信超级跳转技术，利用大站的跳转漏洞，使用CDN，删除跳转来源等等.. 尽可能提高Url在微信里的存活时间  
-这次我们就主要看看微信跳转的实
+          本文只是记录在项目中用到的统计的SQL语句，记一笔以防忘了
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119120121122123124125126
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/05/15/WXGuard-2/#more" rel="contents">
+            <a class="btn" href="/2016/11/27/sql-statistic/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1653,7 +1614,7 @@ https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= 
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ryanfeng1024.github.io/2019/05/14/WXGuard-1/">
+    <link itemprop="mainEntityOfPage" href="https://ryanfeng1024.github.io/2016/11/27/sql-note/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Ryan Feng">
@@ -1672,7 +1633,7 @@ https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= 
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/05/14/WXGuard-1/" itemprop="url">微信域名检测、防封，微信跳转技术揭秘 (一) -- 域名检测原理及防封方案</a></h1>
+                <a class="post-title-link" href="/2016/11/27/sql-note/" itemprop="url">SQL 笔记</a></h1>
         
 
         <div class="post-meta">
@@ -1684,8 +1645,8 @@ https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= 
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-14T17:09:39-04:00">
-                2019-05-14
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-27T13:53:01-05:00">
+                2016-11-27
               </time>
             
 
@@ -1700,8 +1661,8 @@ https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= 
               
                 <span class="post-meta-item-text">Post modified&#58;</span>
               
-              <time title="Post modified" itemprop="dateModified" datetime="2019-05-14T17:09:39-04:00">
-                2019-05-14
+              <time title="Post modified" itemprop="dateModified" datetime="2016-11-27T14:33:01-05:00">
+                2016-11-27
               </time>
             
           </span>
@@ -1714,7 +1675,7 @@ https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= 
 
           
           
-             <span id="/2019/05/14/WXGuard-1/" class="leancloud_visitors" data-flag-title="微信域名检测、防封，微信跳转技术揭秘 (一) -- 域名检测原理及防封方案">
+             <span id="/2016/11/27/sql-note/" class="leancloud_visitors" data-flag-title="SQL 笔记">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1747,23 +1708,12 @@ https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= 
       
         
           
-          
-背景
-一、微信检测手段
-二、域名被封常见因素
-三、域名检测原理
-四、检测代码（C#）
-五、防封方案
-六、参考资料
-
-背景  
-最近因为业务需要，在研究微信跳转，域名防封检测等东西，网上搜集了很多很多资料，发现居然这么简单的一点东西 居然有人专门做成系统拿去卖钱.. 系统功能就只是个微信跳转而已，微信跳外部浏览器  或者浏览器跳到微信内..  而且搜出来很多家这种收费的系统，界面都一模一样.. 真的是无语了。听说这还属于灰产... 我把这些弄出来是不是也可以拿去卖钱了？哈哈哈。  
-
-在网上搜索了很多相关的资料和帖子，发现很多都是大同小异的，原理其实都差不多， 但是搜了很多，它就是不把关键代码
+          123456789--查询某一列在哪个表里SELECT  name ,        object_id ,        type ,        type_descFROM    sys.objectsWHERE   object_id IN ( SELECT   object_id                       FROM     sys.columns                       WHERE    name = &#x27;列名&#x27; )
+下面是关于用SQL对日期的一些查询 和统计，主要是在项目中有遇到 按照 日、周、月、年来统计数据，特此记录一下:
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/05/14/WXGuard-1/#more" rel="contents">
+            <a class="btn" href="/2016/11/27/sql-note/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1805,7 +1755,7 @@ https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid= 
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;</a>
+    <a class="extend prev" rel="prev" href="/">&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;</a>
   </nav>
 
 

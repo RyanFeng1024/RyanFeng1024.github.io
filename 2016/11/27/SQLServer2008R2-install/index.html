@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="SQL," />
 
 
 
@@ -79,15 +79,22 @@
 
 
 
-<meta name="description" content="Ryan Feng’s blog. Zoom blog">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Ryan’s Blog">
-<meta property="og:url" content="https://ryanfeng1024.github.io/archives/index.html">
+<meta name="description" content="工作电脑上安装了SQL 2005， 但是客户电脑上安装的是SQL 2008R2，有时候连接他们的库调试没法连接，很不方便。然后又安装了个SQL2008 R2，期间遇到这两个问题，网上搜索了一下收到了解决方案，不用安装VS 2008 SP1，不用卸载SQL Server 2005 Express 工具，只需要修改注册表即可。      提示错误：此计算机上安装了 Microsoft Visual S">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安装了SQL2005再安装SQL 2008R2，提示此计算机上安装了 Microsoft Visual Studio 2008 的早期版本和检查是否安装了 SQL Server 2005 Express 工具的解决方案">
+<meta property="og:url" content="https://ryanfeng1024.github.io/2016/11/27/SQLServer2008R2-install/index.html">
 <meta property="og:site_name" content="Ryan’s Blog">
-<meta property="og:description" content="Ryan Feng’s blog. Zoom blog">
+<meta property="og:description" content="工作电脑上安装了SQL 2005， 但是客户电脑上安装的是SQL 2008R2，有时候连接他们的库调试没法连接，很不方便。然后又安装了个SQL2008 R2，期间遇到这两个问题，网上搜索了一下收到了解决方案，不用安装VS 2008 SP1，不用卸载SQL Server 2005 Express 工具，只需要修改注册表即可。      提示错误：此计算机上安装了 Microsoft Visual S">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ryanfeng1024.github.io/images/upload/SQLServer2008R2-install-1.png">
+<meta property="og:image" content="https://ryanfeng1024.github.io/images/upload/SQLServer2008R2-install-2.png">
+<meta property="og:image" content="https://ryanfeng1024.github.io/images/upload/SQLServer2008R2-install-3.png">
+<meta property="article:published_time" content="2016-11-27T19:57:28.000Z">
+<meta property="article:modified_time" content="2016-11-27T19:57:28.000Z">
 <meta property="article:author" content="Ryan Feng">
+<meta property="article:tag" content="SQL">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanfeng1024.github.io/images/upload/SQLServer2008R2-install-1.png">
 
 
 
@@ -117,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="https://ryanfeng1024.github.io/archives/"/>
+  <link rel="canonical" href="https://ryanfeng1024.github.io/2016/11/27/SQLServer2008R2-install/"/>
 
 
 
 
 
-  <title>Archive | Ryan’s Blog</title>
+  <title>安装了SQL2005再安装SQL 2008R2，提示此计算机上安装了 Microsoft Visual Studio 2008 的早期版本和检查是否安装了 SQL Server 2005 Express 工具的解决方案 | Ryan’s Blog</title>
   
 
 
@@ -142,7 +149,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -246,416 +253,194 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
 
-      <span class="archive-page-counter">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ryanfeng1024.github.io/2016/11/27/SQLServer2008R2-install/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ryan Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryan’s Blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline">安装了SQL2005再安装SQL 2008R2，提示此计算机上安装了 Microsoft Visual Studio 2008 的早期版本和检查是否安装了 SQL Server 2005 Express 工具的解决方案</h1>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-27T14:57:28-05:00">
+                2016-11-27
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2016-11-27T14:57:28-05:00">
+                2016-11-27
+              </time>
+            
+          </span>
+
           
-        
-        Um..! 21 posts in total. Keep on posting.
-      </span>
 
-      
-
-        
-        
-        
-
-        
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2020">2020</h1>
-          </div>
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/10/29/CSharpGenMachineCode/" itemprop="url">
-              
-                <span itemprop="name">C# WIN 生成机器码</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-10-29T13:59:03-04:00"
-              content="2020-10-29" >
-          10-29
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/08/19/m3u8-download/" itemprop="url">
-              
-                <span itemprop="name">\[C#/Java\] 针对 QINIU-PROTECTION-10 的m3u8视频文件解密</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-08-19T22:40:15-04:00"
-              content="2020-08-19" >
-          08-19
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/08/08/quartz-net/" itemprop="url">
-              
-                <span itemprop="name">Quartz.net的快速简单上手使用以及防止IIS回收停止Job的处理</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-08-08T18:07:59-04:00"
-              content="2020-08-08" >
-          08-08
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/03/18/HideComplaintInWX/" itemprop="url">
-              
-                <span itemprop="name">最新屏蔽微信举报方法</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-03-18T14:16:18-04:00"
-              content="2020-03-18" >
-          03-18
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/03/14/MVCError/" itemprop="url">
-              
-                <span itemprop="name">MVC、Web API 请求接口报错“自定义错误模块不能识别此错误。”解决</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-03-14T10:04:05-04:00"
-              content="2020-03-14" >
-          03-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
+            
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2019">2019</h1>
-          </div>
-        
-        
 
-        
+          
+          
+             <span id="/2016/11/27/SQLServer2008R2-install/" class="leancloud_visitors" data-flag-title="安装了SQL2005再安装SQL 2008R2，提示此计算机上安装了 Microsoft Visual Studio 2008 的早期版本和检查是否安装了 SQL Server 2005 Express 工具的解决方案">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/12/21/WXShortUrl/" itemprop="url">
-              
-                <span itemprop="name">获取微信短链接的官方接口</span>
-              
-            </a>
-        
-      </h2>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-12-21T18:30:05-05:00"
-              content="2019-12-21" >
-          12-21
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+        </div>
+      </header>
+    
 
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/06/05/CMDNote/" itemprop="url">
-              
-                <span itemprop="name">Window 通过cmd查看端口占用、相应进程、杀死进程</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-06-05T14:15:19-04:00"
-              content="2019-06-05" >
-          06-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
+      
+        <p>工作电脑上安装了SQL 2005， 但是客户电脑上安装的是SQL 2008R2，有时候连接他们的库调试没法连接，很不方便。然后又安装了个SQL2008 R2，期间遇到这两个问题，网上搜索了一下收到了解决方案，不用安装VS 2008 SP1，不用卸载SQL Server 2005 Express 工具，只需要修改注册表即可。  </p>
+<p><img src="/../images/upload/SQLServer2008R2-install-1.png" alt="ERROR">  </p>
+<p><strong>提示错误：此计算机上安装了 Microsoft Visual Studio 2008 的早期版本。请在安装 SQL Server 2008 前将 VS2008 升级到 SP1。</strong></p>
+<p>解决方法： 修改注册表。<br>运行注册表<code>regedit</code>，将<code>HKEYLocalMachine/Software/Microsoft/DevDiv</code> 重命名就可以了。<br>64位的路径是 <code>HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\DevDiv</code>  </p>
+<p><strong>提示错误：Sql2005SsmsExpressFacet 检查是否安装了 SQL Server 2005 Express 工具。 失败，已安装 SQL Server 2005 Express 工具。若要继续，请删除 SQL Server 2005 Express 工具</strong></p>
+<p>解决方法： 修改注册表！ <code>HKEYLocalMachine/Software/Microsoft/Microsoft SQL Server/90/Tools/ShellSEM</code>。</p>
+<p><code>HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Microsoft SQL Server\90\Tools\ShellSEM_重命名</code></p>
+<hr>
+<p>安装SQL2008R2的时候 路径和实例名不能一样，实例名改成方便好记一点的，我的就改成了 sql2008r2. 安装完后 ，用 . 登录不上的话 用 “计算机名\实例名” 登录就行了。还有以下几个注意的地方：  </p>
+<p>安装完后SQL2005 和 SQL2008R2 俩个实例并存 但是只有一个1433端口  访问的时候还是有问题的（不过一般安装SQL2008 R2的时候 会自动分配一个其他的）.  </p>
+<p>直接用SQL2008R2 企业管理访问本机,访问的是SQL2005的实例.需要设置下端口  </p>
+<br>
 
-        
-        
+<p>从第二个实例开始的端口是动态端口，需要的话，自己手工指定为静态端口，如指定第二个实例为1434 或着随意一个如2080端口.  </p>
+<br>
 
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/06/03/WXGuard-Design/" itemprop="url">
-              
-                <span itemprop="name">微信跳转、微信防封系统的实现和设计</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-06-03T17:22:46-04:00"
-              content="2019-06-03" >
-          06-03
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+<p>点击电脑左下方的 <code>“开始”-&gt;“Microsoft SQL Server2005”-&gt;“配置工具”-&gt;“SQL Server Configuration Manager”-&gt; “展开网络配置” --&gt;点击“MYSQLSERVER协议”</code> –&gt; 双击左侧新安装的实例数据库名 –&gt; 展开后，再双击右侧的“TCP&#x2F;IP” –&gt;选择“IP地址”就能看到端口号了  </p>
+<p>步骤一：先把上面的动态端口号0，删掉。<br>步骤二：录入TCP端口：自定义<br><img src="/../images/upload/SQLServer2008R2-install-2.png" alt="Alty"><br><img src="/../images/upload/SQLServer2008R2-install-3.png" alt="Alty">    </p>
+<p>(PS:图片来自网络)  </p>
+<p>参考链接：<a target="_blank" rel="noopener" href="http://blog.csdn.net/eric88/article/details/8947558">http://blog.csdn.net/eric88/article/details/8947558</a>  </p>
+<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/sat472291519/article/details/48174515">http://blog.csdn.net/sat472291519/article/details/48174515</a></p>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/05/15/WXGuard-2/" itemprop="url">
-              
-                <span itemprop="name">微信域名检测、防封，微信跳转技术揭秘 (二) -- 微信跳转揭秘</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-05-15T16:38:10-04:00"
-              content="2019-05-15" >
-          05-15
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/05/14/WXGuard-1/" itemprop="url">
-              
-                <span itemprop="name">微信域名检测、防封，微信跳转技术揭秘 (一) -- 域名检测原理及防封方案</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-05-14T17:09:39-04:00"
-              content="2019-05-14" >
-          05-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SQL/" rel="tag"># SQL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/27/stopH5BodySlide/" rel="next" title="如何阻止h5body的滑动">
+                <i class="fa fa-chevron-left"></i> 如何阻止h5body的滑动
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/30/SQLFindColumn/" rel="prev" title="SQL Server 查询数据库中所有指定类型的字段名称和所在的表名">
+                SQL Server 查询数据库中所有指定类型的字段名称和所在的表名 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><a class="extend next" rel="next" href="/archives/page/2/">&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;</a>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -663,6 +448,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -879,6 +668,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 

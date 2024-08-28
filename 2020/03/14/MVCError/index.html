@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="IIS7,MVC,ASP.NET," />
 
 
 
@@ -79,15 +79,23 @@
 
 
 
-<meta name="description" content="Ryan Feng’s blog. Zoom blog">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Ryan’s Blog">
-<meta property="og:url" content="https://ryanfeng1024.github.io/archives/index.html">
+<meta name="description" content="环境： Win server 2008 R2，IIS7 错误原因：使用了自定义的状态响应码。 最近在做接口限流的处理，使用的现成的插件。引入进项目后，本地测试正常，放到服务器上后，请求受限返回响应时 直接返回自定义错误模块不能识别此错误。     排查半天，添加异常日志记录，并没有发现异常。。经过仔细观察和搜索后终于找到原因。是因为在请求次数达到受限值时，过滤器返回响应的时候，状态码是自定义的 4">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MVC、Web API 请求接口报错“自定义错误模块不能识别此错误。”解决">
+<meta property="og:url" content="https://ryanfeng1024.github.io/2020/03/14/MVCError/index.html">
 <meta property="og:site_name" content="Ryan’s Blog">
-<meta property="og:description" content="Ryan Feng’s blog. Zoom blog">
+<meta property="og:description" content="环境： Win server 2008 R2，IIS7 错误原因：使用了自定义的状态响应码。 最近在做接口限流的处理，使用的现成的插件。引入进项目后，本地测试正常，放到服务器上后，请求受限返回响应时 直接返回自定义错误模块不能识别此错误。     排查半天，添加异常日志记录，并没有发现异常。。经过仔细观察和搜索后终于找到原因。是因为在请求次数达到受限值时，过滤器返回响应的时候，状态码是自定义的 4">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://ryanfeng1024.github.io/images/upload/MVCError-1.png">
+<meta property="og:image" content="https://ryanfeng1024.github.io/images/upload/MVCError-2.png">
+<meta property="article:published_time" content="2020-03-14T14:04:05.000Z">
+<meta property="article:modified_time" content="2020-03-14T14:04:05.000Z">
 <meta property="article:author" content="Ryan Feng">
+<meta property="article:tag" content="IIS7">
+<meta property="article:tag" content="MVC">
+<meta property="article:tag" content="ASP.NET">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanfeng1024.github.io/images/upload/MVCError-1.png">
 
 
 
@@ -117,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="https://ryanfeng1024.github.io/archives/"/>
+  <link rel="canonical" href="https://ryanfeng1024.github.io/2020/03/14/MVCError/"/>
 
 
 
 
 
-  <title>Archive | Ryan’s Blog</title>
+  <title>MVC、Web API 请求接口报错“自定义错误模块不能识别此错误。”解决 | Ryan’s Blog</title>
   
 
 
@@ -142,7 +150,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -246,416 +254,209 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
 
-      <span class="archive-page-counter">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ryanfeng1024.github.io/2020/03/14/MVCError/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ryan Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ryan’s Blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline">MVC、Web API 请求接口报错“自定义错误模块不能识别此错误。”解决</h1>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-14T10:04:05-04:00">
+                2020-03-14
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Post modified&#58;</span>
+              
+              <time title="Post modified" itemprop="dateModified" datetime="2020-03-14T10:04:05-04:00">
+                2020-03-14
+              </time>
+            
+          </span>
+
           
-        
-        Um..! 21 posts in total. Keep on posting.
-      </span>
 
-      
-
-        
-        
-        
-
-        
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2020">2020</h1>
-          </div>
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/10/29/CSharpGenMachineCode/" itemprop="url">
-              
-                <span itemprop="name">C# WIN 生成机器码</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-10-29T13:59:03-04:00"
-              content="2020-10-29" >
-          10-29
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/08/19/m3u8-download/" itemprop="url">
-              
-                <span itemprop="name">\[C#/Java\] 针对 QINIU-PROTECTION-10 的m3u8视频文件解密</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-08-19T22:40:15-04:00"
-              content="2020-08-19" >
-          08-19
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/08/08/quartz-net/" itemprop="url">
-              
-                <span itemprop="name">Quartz.net的快速简单上手使用以及防止IIS回收停止Job的处理</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-08-08T18:07:59-04:00"
-              content="2020-08-08" >
-          08-08
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/03/18/HideComplaintInWX/" itemprop="url">
-              
-                <span itemprop="name">最新屏蔽微信举报方法</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-03-18T14:16:18-04:00"
-              content="2020-03-18" >
-          03-18
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2020/03/14/MVCError/" itemprop="url">
-              
-                <span itemprop="name">MVC、Web API 请求接口报错“自定义错误模块不能识别此错误。”解决</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-03-14T10:04:05-04:00"
-              content="2020-03-14" >
-          03-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
+            
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2019">2019</h1>
-          </div>
-        
-        
 
-        
+          
+          
+             <span id="/2020/03/14/MVCError/" class="leancloud_visitors" data-flag-title="MVC、Web API 请求接口报错“自定义错误模块不能识别此错误。”解决">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/12/21/WXShortUrl/" itemprop="url">
-              
-                <span itemprop="name">获取微信短链接的官方接口</span>
-              
-            </a>
-        
-      </h2>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-12-21T18:30:05-05:00"
-              content="2019-12-21" >
-          12-21
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+        </div>
+      </header>
+    
 
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/06/05/CMDNote/" itemprop="url">
-              
-                <span itemprop="name">Window 通过cmd查看端口占用、相应进程、杀死进程</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-06-05T14:15:19-04:00"
-              content="2019-06-05" >
-          06-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
+      
+        <p>环境： Win server 2008 R2，IIS7</p>
+<p>错误原因：<strong>使用了自定义的状态响应码。</strong></p>
+<p>最近在做接口限流的处理，使用的现成的插件。引入进项目后，本地测试正常，放到服务器上后，请求受限返回响应时 直接返回<span style="color:red;">自定义错误模块不能识别此错误。</span> </p>
+<p><img src="/../images/upload/MVCError-1.png" alt="Alt text">  </p>
+<p>排查半天，添加异常日志记录，并没有发现异常。。经过仔细观察和搜索后终于找到原因。是因为在请求次数达到受限值时，过滤器返回响应的时候，状态码是自定义的 <code>429 Too Many Requests</code> ，对于本地开发是好的. 本地IIS 也正常。 放在 <code>win server 2008R2</code> 服务器  II7上就不行， 可能是IIS版本太老旧 不支持自定义的状态码吧.   </p>
+<br />
 
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/06/03/WXGuard-Design/" itemprop="url">
-              
-                <span itemprop="name">微信跳转、微信防封系统的实现和设计</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-06-03T17:22:46-04:00"
-              content="2019-06-03" >
-          06-03
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+<p><strong>解决方法：</strong> 如果自定义状态码不是必须条件的话，最简单的就是 响应的时候 把 Response.StatusCode 设置成200就可以啦； 如果非要维持自定义状态码并且要正常响应，那就得手动把错误码添加到IIS里去。  </p>
+<p>我已经改了状态码就可以正常响应了，所以第二个方法就没试，引用一下其它文章写得解决步骤作参考：</p>
+<blockquote>
+<p>把错误代码添加到IIS 7：</p>
+<ol>
+<li><p>用HTML编辑器或文本编辑器，为错误消息创建一个简单的.htm页面。提供<code>&lt;title&gt;</code>和带一段简短描述的<code>&lt;body&gt;</code>，比如“GIS服务需要token才能访问，参考ArcGIS Server Help，了解如何使用token访问安全的服务。”把.htm文件保存在服务器上。</p>
+</li>
+<li><p>点击“开始—所有程序—管理工具”，点击“服务器管理器”，打开服务器管理器程序</p>
+</li>
+<li><p>点击“角色”，在右边栏定位到Web服务器（IIS），在列表里检查一下“HTTP 错误”项是否已安装，如果没有安装，点击“添加角色服务”安装HTTP错误角色服务</p>
+</li>
+<li><p>在服务器管理器左边，展开角色—Web 服务器（IIS），点击“Internet信息服务（IIS）管理器”，在中间的连接列里，点击服务器名称，在右边窗口会显示服务器主页以及设置的链接。</p>
+</li>
+<li><p>在服务器管理器的右边，分组依据选择“类别”，在HTTP 功能组中双击“错误页”，会显示错误代码和页面的列表</p>
+</li>
+<li><p>在右边的操作栏里，点击“添加…”，打开对话框，在状态代码里输入499。选中“将静态文件中的内容插入错误响应中”，输入第1步创建的.htm文件路径。点击确定保存设置，然后关闭服务器管理器。</p>
+</li>
+<li><p>在另一台电脑上打开浏览器，请求一个需要token的服务的WSDL，比如：<br><a target="_blank" rel="noopener" href="http://myserver/arcgis/services/MySecuredService/MapServer?wsdl">http://myserver/arcgis/services/MySecuredService/MapServer?wsdl</a> 应该会自定义的错误页面。</p>
+</li>
+</ol>
+</blockquote>
+<p><img src="/../images/upload/MVCError-2.png" alt="Alt text">  </p>
+<p><strong>参考资料：</strong>  </p>
+<p><a target="_blank" rel="noopener" href="http://support.esrichina.com.cn/2008/1022/780.html">http://support.esrichina.com.cn/2008/1022/780.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://ask.dcloud.net.cn/question/481">https://ask.dcloud.net.cn/question/481</a></p>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/05/15/WXGuard-2/" itemprop="url">
-              
-                <span itemprop="name">微信域名检测、防封，微信跳转技术揭秘 (二) -- 微信跳转揭秘</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-05-15T16:38:10-04:00"
-              content="2019-05-15" >
-          05-15
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/05/14/WXGuard-1/" itemprop="url">
-              
-                <span itemprop="name">微信域名检测、防封，微信跳转技术揭秘 (一) -- 域名检测原理及防封方案</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-05-14T17:09:39-04:00"
-              content="2019-05-14" >
-          05-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/IIS7/" rel="tag"># IIS7</a>
+          
+            <a href="/tags/MVC/" rel="tag"># MVC</a>
+          
+            <a href="/tags/ASP-NET/" rel="tag"># ASP.NET</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/21/WXShortUrl/" rel="next" title="获取微信短链接的官方接口">
+                <i class="fa fa-chevron-left"></i> 获取微信短链接的官方接口
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/18/HideComplaintInWX/" rel="prev" title="最新屏蔽微信举报方法">
+                最新屏蔽微信举报方法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><a class="extend next" rel="next" href="/archives/page/2/">&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;</a>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -663,6 +464,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -879,6 +684,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
